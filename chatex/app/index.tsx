@@ -1,5 +1,5 @@
 import {
-  Button,
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -16,6 +16,7 @@ import { DefaultStyles } from "@/styles/DefaultStyles";
 import { useUserStore } from "@/store/useUserStore";
 import { router, useNavigation } from "expo-router";
 import { rem } from "@/utils/rn-units";
+import { login } from "@/api/client/auth/login";
 
 const LoginScreen = () => {
   const [name, setName] = useState("");
@@ -32,10 +33,15 @@ const LoginScreen = () => {
     checkUser();
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (name.trim()) {
-      setUsername(name.trim());
-      router.replace("/chat");
+      const user = await login({ username: name });
+      if (!user) {
+        Alert.alert("Failed to login");
+      }
+      Alert.alert("Successfully logged in");
+      setUsername(user.user.username);
+      router.push("/chat");
     }
   };
   return (
@@ -53,6 +59,8 @@ const LoginScreen = () => {
               </Text>
               <View style={styles.container}>
                 <TextInput
+                  autoFocus
+                  autoCorrect={false}
                   style={styles.input}
                   placeholder="Username"
                   value={name}

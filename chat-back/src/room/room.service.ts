@@ -18,11 +18,11 @@ export class RoomService {
     return createdRoom.save();
   }
 
-  async findAll() {
+  async findAll(): Promise<Room[]> {
     return this.roomModel.find().populate('members createdBy');
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<Room | null> {
     return this.roomModel.findById(id).populate('members createdBy');
   }
 }
