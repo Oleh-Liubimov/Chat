@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultStyles } from "@/styles/DefaultStyles";
 import { useUserStore } from "@/store/useUserStore";
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 import { rem } from "@/utils/rn-units";
 import { login } from "@/api/client/auth/login";
 

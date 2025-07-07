@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
+import { Message } from 'src/schemas/message.schema';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -27,11 +28,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('new-message')
   async handleMessage(
     client: Socket,
-    payload: { username: string; messageContent: string },
+    payload: { username: string; messageContent: string; roomId: string },
   ) {
-    const saved = await this.chatService.saveMessage(
+    const saved: Message = await this.chatService.saveMessage(
       payload.username,
       payload.messageContent,
+      payload.roomId,
     );
 
     this.server.emit('new-message', saved);

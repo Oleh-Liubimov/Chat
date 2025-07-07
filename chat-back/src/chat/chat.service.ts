@@ -12,11 +12,13 @@ export class ChatService {
   async saveMessage(
     username: string,
     messageContent: string,
+    roomId: string,
     isSystemMessage = false,
   ) {
     const newMessage = new this.messageModel({
       username,
       messageContent,
+      roomId,
       isSystemMessage,
     });
     return newMessage.save();

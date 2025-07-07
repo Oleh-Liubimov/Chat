@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, View } from "react-native";
 import React from "react";
 import { DefaultStyles } from "@/styles/DefaultStyles";
 import { Message } from "@/app/chat";

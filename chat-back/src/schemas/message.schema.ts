@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Room } from './room.schema';
 
 @Schema({ timestamps: true })
 export class Message extends Document {
@@ -11,6 +12,9 @@ export class Message extends Document {
 
   @Prop({ default: false })
   isSystemMessage: boolean;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: () => Room }], required: true })
+  roomId: Types.ObjectId;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

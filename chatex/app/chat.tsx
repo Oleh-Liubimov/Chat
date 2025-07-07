@@ -1,11 +1,9 @@
 import {
-  FlatList,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -19,10 +17,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MessageList } from "@/components/MessageList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultStyles } from "@/styles/DefaultStyles";
-import { SingleMessage } from "@/components/Message";
-import { Input, InputField, InputSlot } from "@/components/ui/input";
-import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
-import { SendHorizontal } from "lucide-react-native";
+import { Input, InputField } from "@/components/ui/input";
+import { Paperclip, SendHorizontal } from "lucide-react-native";
+import { COLORS } from "@/constants/Colors";
+import ChatInput from "@/components/input/ChatInput";
 
 export type Message = {
   _id: string;
@@ -86,32 +84,20 @@ const ChatScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1"
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
     >
-      <SafeAreaView
-        style={[DefaultStyles.flex1, { backgroundColor: "#011b45" }]}
-      >
+      <SafeAreaView className="flex-1 bg-gray-300">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.container}>
-            <Text
-              style={{ fontSize: rem(25), color: "white", textAlign: "center" }}
-            >
-              Chat
-            </Text>
+          <View className="flex-1">
+            <Text className="text-white text-center text-2xl">Chat</Text>
             <View style={DefaultStyles.flex1}>
               <MessageList messages={messages} />
             </View>
-            <View className="flex-row items-center gap-2">
-              <Input size="lg" className="flex-1">
-                <InputField
-                  placeholder="What's new?"
-                  value={input}
-                  onChangeText={setInput}
-                />
-                <TouchableOpacity className="px-3 py-2">
-                  <SendHorizontal color="#4287f5" size={rem(30)} />
-                </TouchableOpacity>
-              </Input>
-            </View>
+            <ChatInput
+              input={input}
+              handleSendMessage={handleSendMessage}
+              setInput={setInput}
+            />
           </View>
         </TouchableWithoutFeedback>
       </SafeAreaView>
@@ -120,11 +106,3 @@ const ChatScreen = () => {
 };
 
 export default ChatScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: rem(26),
-    paddingBottom: rem(10),
-  },
-});
