@@ -1,5 +1,4 @@
 import {
-  Button,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -7,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -20,6 +20,9 @@ import { MessageList } from "@/components/MessageList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultStyles } from "@/styles/DefaultStyles";
 import { SingleMessage } from "@/components/Message";
+import { Input, InputField, InputSlot } from "@/components/ui/input";
+import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
+import { SendHorizontal } from "lucide-react-native";
 
 export type Message = {
   _id: string;
@@ -82,7 +85,7 @@ const ChatScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+      className="flex-1"
     >
       <SafeAreaView
         style={[DefaultStyles.flex1, { backgroundColor: "#011b45" }]}
@@ -97,28 +100,17 @@ const ChatScreen = () => {
             <View style={DefaultStyles.flex1}>
               <MessageList messages={messages} />
             </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 8,
-                paddingHorizontal: rem(20),
-              }}
-            >
-              <TextInput
-                placeholder="Type a message"
-                value={input}
-                onChangeText={setInput}
-                style={{
-                  flex: 1,
-                  borderWidth: 1,
-                  borderColor: "#ccc",
-                  borderRadius: 8,
-                  padding: 10,
-                  backgroundColor: "white",
-                }}
-              />
-              <Button title="Send" onPress={handleSendMessage} />
+            <View className="flex-row items-center gap-2">
+              <Input size="lg" className="flex-1">
+                <InputField
+                  placeholder="What's new?"
+                  value={input}
+                  onChangeText={setInput}
+                />
+                <TouchableOpacity className="px-3 py-2">
+                  <SendHorizontal color="#4287f5" size={rem(30)} />
+                </TouchableOpacity>
+              </Input>
             </View>
           </View>
         </TouchableWithoutFeedback>
