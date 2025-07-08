@@ -19,10 +19,10 @@ export class RoomService {
   }
 
   async findAll(): Promise<Room[]> {
-    return this.roomModel.find().populate('members createdBy');
+    return this.roomModel.find().populate('members createdBy').lean();
   }
 
   async findById(id: string): Promise<Room | null> {
-    return this.roomModel.findById(id).populate('members createdBy');
+    return this.roomModel.findById(id).populate('members createdBy').lean();
   }
 }

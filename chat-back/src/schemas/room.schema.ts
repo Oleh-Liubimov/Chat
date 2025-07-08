@@ -10,6 +10,9 @@ export class Room extends Document {
   @Prop()
   description: string;
 
+  @Prop()
+  roomAvatarUrl?: string;
+
   @Prop({ enum: ['public', 'private'], default: 'private' })
   type: 'public' | 'private';
 

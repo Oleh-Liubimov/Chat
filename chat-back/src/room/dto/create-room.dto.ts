@@ -17,6 +17,10 @@ export class CreateRoomDto {
   description?: string;
 
   @IsOptional()
+  @IsString()
+  roomAvatarUrl?: string;
+
+  @IsOptional()
   @IsIn(['public', 'private'])
   type?: 'public' | 'private';
 
