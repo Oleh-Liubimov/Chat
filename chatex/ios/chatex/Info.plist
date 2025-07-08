@@ -8,6 +8,8 @@
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
     <string>chatex</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+<string>Ми використовуємо фото, щоб вибрати аватар</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
