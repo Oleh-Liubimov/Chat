@@ -14,7 +14,7 @@ import { Request } from 'express';
 import { JwtPayload } from 'src/auth/types/jwt-payload';
 import { Room } from 'src/schemas/room.schema';
 
-@Controller('room')
+@Controller('rooms')
 export class RoomController {
   constructor(private roomService: RoomService) {}
 
