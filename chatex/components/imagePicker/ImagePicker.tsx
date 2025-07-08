@@ -36,15 +36,15 @@ export const ImagePicker = ({onChange, value}: ImagePickerProps) => {
     });
   };
   return (
-    <VStack className="gap-5">
+    <VStack className="gap-5 justify-center items-center">
       <Button onPress={pickImage} className="rounded-3xl">
         <ButtonText>Add image</ButtonText>
       </Button>
       {value && (
         <Image
           source={{uri: value}}
-          width={100}
-          height={100}
+          width={200}
+          height={200}
           alt="chat avatar"
         />
       )}

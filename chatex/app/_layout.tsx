@@ -48,7 +48,7 @@ function RootLayoutNav() {
           headerTitleAlign:"center" , 
           headerTitle:"My Chats"}}
           />
-        <Stack.Screen name="chat"  />
+        <Stack.Screen name="chat/[roomId]" />
         <Stack.Screen name='(modal)/createChat' 
           options={{
             headerShown:false,

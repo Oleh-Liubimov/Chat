@@ -6,25 +6,37 @@ import {Text} from '../ui/text';
 import {ImagePicker} from '../imagePicker/ImagePicker';
 import {useForm, Controller} from 'react-hook-form';
 import {Button, ButtonText} from '../ui/button';
+import {useUserStore} from '@/store/useUserStore';
+import {createRoom} from '@/api/client/rooms/createRoom';
+import {router} from 'expo-router';
 
 type FormValues = {
   name: string;
   description?: string;
   imageUrl?: string | null;
+  members?: string[] | null;
+  createdBy: string;
+  type: 'private' | 'public';
 };
 
 export const CreateCharForm = () => {
+  const user = useUserStore().user;
   const {control, handleSubmit} = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
       name: '',
       description: '',
       imageUrl: null,
+      members: [user?.userId],
+      createdBy: user?.userId,
+      type: 'private',
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit = async (data: FormValues) => {
+    const response = await createRoom(data);
+    console.log(response);
+    router.push('/');
   };
   return (
     <VStack className="gap-5">

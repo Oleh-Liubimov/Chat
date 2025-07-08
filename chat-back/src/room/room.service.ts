@@ -11,6 +11,7 @@ export class RoomService {
   async createRoom(dto: CreateRoomDto, userId: string) {
     const createdRoom = new this.roomModel({
       ...dto,
+
       createdBy: new Types.ObjectId(userId),
       members: [new Types.ObjectId(userId)],
     });

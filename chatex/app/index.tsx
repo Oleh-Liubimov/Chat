@@ -1,21 +1,16 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DefaultStyles } from "@/styles/DefaultStyles";
 import { useUserStore } from "@/store/useUserStore";
-import { rem } from "@/utils/rn-units";
 import { getAllRooms } from "@/api/client/rooms/getAllRooms";
-import { Button, ButtonText } from "@/components/ui/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { Room } from "@/types/room";
-import { RoomCard } from "@/components/rooms/Room";
 import { Spinner } from "@/components/ui/spinner";
 import { Center } from "@/components/ui/center";
+import { Room } from "@/types/room";
+import { RoomCard } from "@/components/rooms/RoomCard";
+import { FlatList } from "react-native";
+import { Divider } from "@/components/ui/divider";
 
 const HomeScreen = () => {
   const [rooms, setRooms] = useState<Room[]>([])
@@ -61,9 +56,17 @@ const HomeScreen = () => {
       {/* <Button onPress={handleDeleteUser}>
         <ButtonText>Delete user</ButtonText>
       </Button> */}
-        {rooms.map(room => (
-          <RoomCard room={room} key={room._id} />
-        ))}
+        
+        <FlatList 
+        data={rooms} 
+        keyExtractor={(item)=>item._id} 
+        renderItem={({item}) => (
+          <RoomCard room={item} key={item._id} />
+        )}
+       ItemSeparatorComponent={()=>(
+        <Divider className=" bg-black"/>
+       )}
+        />
     </SafeAreaView>
   );
 };
