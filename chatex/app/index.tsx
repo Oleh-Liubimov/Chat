@@ -1,84 +1,49 @@
 import {
-  Alert,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DefaultStyles } from "@/styles/DefaultStyles";
 import { useUserStore } from "@/store/useUserStore";
-import { router } from "expo-router";
 import { rem } from "@/utils/rn-units";
-import { login } from "@/api/client/auth/login";
+import { getAllRooms } from "@/api/client/rooms/getAllRooms";
+import { Button, ButtonText } from "@/components/ui/button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
-const LoginScreen = () => {
-  const [name, setName] = useState("");
-  const setUsername = useUserStore((s) => s.setUsername);
+const HomeScreen = () => {
+  
+  const clearUser = useUserStore().clearUser
+  const user = useUserStore().user
+  console.log(user);
+  
 
   useEffect(() => {
-    const checkUser = async () => {
-      await useUserStore.getState().loadUsername();
-      const user = useUserStore.getState().username;
-      if (user) {
-        router.replace("/chats");
-      }
+    const getRooms = async () => {
+
+      const rooms = await getAllRooms();
+      
     };
-    checkUser();
+    getRooms();
   }, []);
 
-  const handleLogin = async () => {
-    if (name.trim()) {
-      const user = await login({ username: name });
-      if (!user) {
-        Alert.alert("Failed to login");
-      }
-      Alert.alert("Successfully logged in");
-      setUsername(user.user.username);
-      router.push("/chat");
-    }
-  };
+  const handleDeleteUser = async () => {
+    await AsyncStorage.clear()
+    clearUser()
+    router.replace('/login')
+  }
   return (
     <SafeAreaView style={DefaultStyles.flex1}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.container}>
-            <View style={styles.container}>
-              <Text style={{ fontSize: 40 }}>Login</Text>
-              <Text style={{ fontSize: 25 }}>
-                Please enter your name for chat
-              </Text>
-              <View style={styles.container}>
-                <TextInput
-                  autoFocus
-                  autoCorrect={false}
-                  style={styles.input}
-                  placeholder="Username"
-                  value={name}
-                  onChangeText={setName}
-                />
-                <TouchableOpacity onPress={handleLogin} style={styles.button}>
-                  <Text>Join chat</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+      <Text>Chats</Text>
+      <Button onPress={handleDeleteUser}>
+        <ButtonText>Delete user</ButtonText>
+      </Button>
     </SafeAreaView>
   );
 };
 
-export default LoginScreen;
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {

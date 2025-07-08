@@ -9,11 +9,9 @@ import React, { useEffect, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { router } from "expo-router";
 import { socket } from "@/socket/socket";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MessageList } from "@/components/MessageList";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ChatInput from "@/components/input/ChatInput";
-import { Text } from "@/components/ui/text";
 
 export type Message = {
   _id: string;
@@ -23,13 +21,13 @@ export type Message = {
 };
 
 const ChatScreen = () => {
-  const username = useUserStore((s) => s.username);
+  const user = useUserStore((s) => s.user);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    if (!username) {
+    if (!user) {
       router.replace("/");
       return;
     }
@@ -58,7 +56,7 @@ const ChatScreen = () => {
   const handleSendMessage = () => {
     if (input.trim()) {
       socket.emit("new-message", {
-        username,
+        user,
         messageContent: input.trim(),
       });
       setInput("");

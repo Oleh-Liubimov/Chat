@@ -1,7 +1,8 @@
 // import {ENV} from '@utils/getEnv';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, { AxiosError } from "axios";
 import { backOff } from "exponential-backoff";
-import Config from "react-native-config";
+import { Platform } from "react-native";
 
 const backOffOptions = {
   delayFirstAttempt: true,
@@ -20,8 +21,17 @@ const backOffOptions = {
 } as const;
 
 const client = axios.create({
-  baseURL: Config.BASE_API_URL,
+  baseURL: Platform.OS === "android" ? process.env.EXPO_PUBLIC_BASE_URL_ANDROID :process.env.EXPO_PUBLIC_BASE_URL_IOS,
 });
+
+client.interceptors.request.use(async(config) => {
+  const token = await AsyncStorage.getItem("accessToken")
+
+  if(token){
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
 
 export async function post<TRequest, TResponse>(
   path: string,
