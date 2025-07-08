@@ -2,9 +2,6 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -12,15 +9,11 @@ import React, { useEffect, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { router } from "expo-router";
 import { socket } from "@/socket/socket";
-import { rem } from "@/utils/rn-units";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MessageList } from "@/components/MessageList";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DefaultStyles } from "@/styles/DefaultStyles";
-import { Input, InputField } from "@/components/ui/input";
-import { Paperclip, SendHorizontal } from "lucide-react-native";
-import { COLORS } from "@/constants/Colors";
 import ChatInput from "@/components/input/ChatInput";
+import { Text } from "@/components/ui/text";
 
 export type Message = {
   _id: string;
@@ -34,14 +27,6 @@ const ChatScreen = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-
-  const seeUsername = async () => {
-    console.log(await AsyncStorage.getItem("username"));
-  };
-
-  useEffect(() => {
-    seeUsername();
-  });
 
   useEffect(() => {
     if (!username) {
@@ -84,13 +69,15 @@ const ChatScreen = () => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1"
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+      keyboardVerticalOffset={Platform.OS === "ios" ? -20 : 0}
     >
-      <SafeAreaView className="flex-1 bg-gray-300">
+      <SafeAreaView
+        edges={["left", "right", "bottom"]}
+        className="flex-1 bg-gray-300"
+      >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View className="flex-1">
-            <Text className="text-white text-center text-2xl">Chat</Text>
-            <View style={DefaultStyles.flex1}>
+            <View className="flex-1">
               <MessageList messages={messages} />
             </View>
             <ChatInput

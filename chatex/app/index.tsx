@@ -27,7 +27,7 @@ const LoginScreen = () => {
       await useUserStore.getState().loadUsername();
       const user = useUserStore.getState().username;
       if (user) {
-        router.replace("/chat");
+        router.replace("/chats");
       }
     };
     checkUser();

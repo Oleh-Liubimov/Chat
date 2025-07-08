@@ -12,9 +12,13 @@ interface ChatInputProps {
 }
 const ChatInput = ({ handleSendMessage, input, setInput }: ChatInputProps) => {
   return (
-    <View className="flex-row items-center gap-2 pl-2 bg-gray-300">
+    <View className="flex-row items-center gap-2 pl-2 bg-gray-300 absolute bottom-0">
       <Paperclip color={COLORS.gray} />
-      <Input size="lg" variant="rounded" className="flex-1 gap-5">
+      <Input
+        size="lg"
+        variant="rounded"
+        className="flex-1 gap-5 border-none focus:border-none"
+      >
         <InputField
           placeholder="What's new?"
           value={input}
@@ -22,7 +26,7 @@ const ChatInput = ({ handleSendMessage, input, setInput }: ChatInputProps) => {
           onChangeText={setInput}
         />
       </Input>
-      <TouchableOpacity className="px-3 py-2" onPress={handleSendMessage}>
+      <TouchableOpacity className="pr-3 py-2" onPress={handleSendMessage}>
         <SendHorizontal color={COLORS.gray} size={rem(30)} />
       </TouchableOpacity>
     </View>

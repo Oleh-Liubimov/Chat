@@ -1,6 +1,5 @@
 import { FlatList, View } from "react-native";
 import React from "react";
-import { DefaultStyles } from "@/styles/DefaultStyles";
 import { Message } from "@/app/chat";
 import { SingleMessage } from "./Message";
 
@@ -10,7 +9,7 @@ interface MessageListProps {
 
 export const MessageList = ({ messages }: MessageListProps) => {
   return (
-    <View style={DefaultStyles.flex1}>
+    <View className="flex-1 h-full bg-white">
       <FlatList
         data={messages}
         showsVerticalScrollIndicator={false}
