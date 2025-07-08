@@ -1,5 +1,8 @@
 import { Room } from "@/types/room";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { Text } from "../ui/text";
+import { Image } from "../ui/image";
+import { Avatar, AvatarImage } from "../ui/avatar";
 
 interface RoomProps {
   room: Room;
@@ -7,8 +10,14 @@ interface RoomProps {
 
 export const RoomCard = ({ room }: RoomProps) => {
   return (
-    <View>
-      <Text>{room.name}</Text>
+    <View className="flex-row gap-5">
+      <Avatar>
+        <AvatarImage source={{ uri: room.roomAvatarUrl }} />
+      </Avatar>
+      <View>
+        <Text className="text-2xl">{room.name}</Text>
+        <Text>{room.description}</Text>
+      </View>
     </View>
   );
 };

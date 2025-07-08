@@ -1,11 +1,8 @@
 import { Room } from "@/types/room";
 import { get } from "..";
+import { Platform } from "react-native";
 
-interface GetAllRoomsResponse {
-  rooms: Room[];
-}
+
 export const getAllRooms = async () => {
-  const response = await get<GetAllRoomsResponse>("rooms");
-
-  return response.rooms;
+  return get<Room[]>("rooms");
 };

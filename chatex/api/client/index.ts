@@ -21,17 +21,20 @@ const backOffOptions = {
 } as const;
 
 const client = axios.create({
-  baseURL: Platform.OS === "android" ? process.env.EXPO_PUBLIC_BASE_URL_ANDROID :process.env.EXPO_PUBLIC_BASE_URL_IOS,
+  baseURL: Platform.OS === "android" ? process.env.EXPO_PUBLIC_BASE_URL_ANDROID : process.env.EXPO_PUBLIC_BASE_URL_IOS,
 });
 
 client.interceptors.request.use(async(config) => {
   const token = await AsyncStorage.getItem("accessToken")
+  
 
   if(token){
     config.headers.Authorization = `Bearer ${token}`
   }
   return config
 })
+
+
 
 export async function post<TRequest, TResponse>(
   path: string,
@@ -74,6 +77,7 @@ export async function get<TResponse>(
     async () => client.get<TResponse>(path, { params: queryParams }),
     backOffOptions
   );
+
   return response.data;
 }
 

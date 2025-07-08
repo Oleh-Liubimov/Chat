@@ -4,6 +4,8 @@ import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "react-native-reanimated";
 import { useUserStore } from "@/store/useUserStore";
 import { useEffect } from "react";
+import { Menu } from "lucide-react-native";
+import { MenuIconPressable } from "@/components/icons/MenuIcon";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -37,8 +39,7 @@ function RootLayoutNav() {
   return (
     <GluestackUIProvider mode="dark">
       <Stack initialRouteName="index">
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="chats" />
+        <Stack.Screen name="index" options={{headerLeft: () => <MenuIconPressable/>, headerTitleAlign:"center"}}  />
         <Stack.Screen name="chat"  />
       </Stack>
     </GluestackUIProvider>

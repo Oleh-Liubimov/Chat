@@ -32,7 +32,7 @@ const LoginScreen = () => {
       await AsyncStorage.setItem("accessToken", response.accessToken);
 
       setUser(response.user);
-      router.replace("/chats");
+      router.replace("/");
     }
   };
   return (

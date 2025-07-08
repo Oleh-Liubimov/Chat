@@ -11,22 +11,29 @@ import { getAllRooms } from "@/api/client/rooms/getAllRooms";
 import { Button, ButtonText } from "@/components/ui/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import { Room } from "@/types/room";
+import { RoomCard } from "@/components/rooms/Room";
 
 const HomeScreen = () => {
+  const [rooms, setRooms] = useState<Room[]>([])
   
   const clearUser = useUserStore().clearUser
   const user = useUserStore().user
-  console.log(user);
+  
   
 
   useEffect(() => {
     const getRooms = async () => {
-
       const rooms = await getAllRooms();
-      
+      setRooms(rooms);
     };
     getRooms();
   }, []);
+
+  // useEffect(()=>{
+  //   console.log(rooms);
+  // },[rooms])
+
 
   const handleDeleteUser = async () => {
     await AsyncStorage.clear()
@@ -34,42 +41,20 @@ const HomeScreen = () => {
     router.replace('/login')
   }
   return (
-    <SafeAreaView style={DefaultStyles.flex1}>
+    <SafeAreaView 
+        className="flex-1" 
+        edges={["left", "right", "bottom"]}
+    >
       <Text>Chats</Text>
-      <Button onPress={handleDeleteUser}>
+      {/* <Button onPress={handleDeleteUser}>
         <ButtonText>Delete user</ButtonText>
-      </Button>
+      </Button> */}
+        {rooms.map(room => (
+          <RoomCard room={room} key={room._id} />
+        ))}
     </SafeAreaView>
   );
 };
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: rem(20),
-  },
-  input: {
-    borderColor: "black",
-    borderRadius: rem(12),
-    width: "80%",
-    borderWidth: rem(1),
-    backgroundColor: "white",
-    color: "black",
-    paddingHorizontal: rem(16),
-    paddingVertical: rem(12),
-  },
-  button: {
-    paddingHorizontal: rem(16),
-    paddingVertical: rem(12),
-    borderRadius: rem(12),
-    borderWidth: rem(1),
-    textAlign: "center",
-    borderColor: "#4287f5",
-    backgroundColor: "#4287f5",
-  },
-});
