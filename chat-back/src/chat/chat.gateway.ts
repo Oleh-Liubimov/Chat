@@ -8,6 +8,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
 import { Message } from 'src/schemas/message.schema';
+import { CreateMessageDto } from './dto/create-message.dto';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -15,27 +16,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(private readonly chatService: ChatService) {}
 
-  async handleConnection(client: Socket) {
+  handleConnection(client: Socket) {
     console.log(`Client connected ${client.id}`);
-    const messages = await this.chatService.getAllMessages();
-    client.emit('chat-history', messages);
   }
 
   handleDisconnect(client: Socket) {
     console.log(`Client disconnected ${client.id}`);
   }
 
-  @SubscribeMessage('new-message')
-  async handleMessage(
-    client: Socket,
-    payload: { username: string; messageContent: string; roomId: string },
-  ) {
-    const saved: Message = await this.chatService.saveMessage(
-      payload.username,
-      payload.messageContent,
-      payload.roomId,
-    );
+  @SubscribeMessage('join-room')
+  async handleJoinRoom(client: Socket, payload: { roomId: string }) {
+    await client.join(payload.roomId);
+    const messages = await this.chatService.getMessagesFromRoom(payload.roomId);
+    client.emit('chat-history', messages);
+    console.log(`Client ${client.id} joined room ${payload.roomId}`);
+  }
 
-    this.server.emit('new-message', saved);
+  @SubscribeMessage('new-message')
+  async handleMessage(client: Socket, payload: CreateMessageDto) {
+    const saved: Message = await this.chatService.saveMessage(payload);
+
+    this.server.to(payload.roomId).emit('new-message', saved);
   }
 }
